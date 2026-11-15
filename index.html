@@ -1,0 +1,539 @@
+
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Մեր փոքրիկ աշխարհը ♡</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: Georgia, serif;
+  background: #f7efec;
+  color: #704c55;
+}
+
+/* ՇԱՊԻԿ */
+
+.cover {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(145deg, #f8e9e7, #ead5d2, #f7eee9);
+}
+
+.cover-content {
+  width: 100%;
+  max-width: 500px;
+  padding: 55px 25px;
+  border: 1px solid #d8b8b5;
+  border-radius: 25px;
+  background: rgba(255,255,255,0.35);
+  box-shadow: 0 15px 45px rgba(100,50,50,0.10);
+}
+
+.heart {
+  color: #b66b78;
+  font-size: 55px;
+  margin-bottom: 22px;
+}
+
+.cover h1 {
+  font-size: clamp(30px, 7vw, 43px);
+  font-weight: normal;
+  color: #704c55;
+  margin-bottom: 20px;
+}
+
+.cover p {
+  color: #98747b;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.line {
+  width: 65px;
+  height: 1px;
+  background: #bd9298;
+  margin: 25px auto;
+}
+
+.cover button {
+  margin-top: 30px;
+  padding: 14px 28px;
+  border: 1px solid #b9828b;
+  border-radius: 30px;
+  background: #b9828b;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.cover button:hover {
+  background: #9e6873;
+  transform: scale(1.04);
+}
+
+/* ԱԼԲՈՄ */
+
+.album {
+  display: none;
+  min-height: 100vh;
+  padding: 35px 15px;
+  text-align: center;
+}
+
+.album h2 {
+  font-size: 30px;
+  font-weight: normal;
+  margin-bottom: 8px;
+}
+
+.intro {
+  color: #a78389;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.book {
+  width: 100%;
+  max-width: 750px;
+  min-height: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fffaf8;
+  border: 1px solid #ead9d5;
+  border-radius: 12px;
+  box-shadow: 0 12px 35px rgba(100,50,50,0.10);
+}
+
+.page {
+  display: none;
+  animation: appear 0.5s ease;
+}
+
+.page.active {
+  display: block;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.photo-area {
+  width: 100%;
+  height: 430px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f1ee;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.photo-area img {
+  display: block;
+  max-width: 100%;
+  max-height: 430px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.caption {
+  padding: 23px 10px 10px;
+  font-size: 19px;
+  line-height: 1.7;
+  color: #875f68;
+  font-style: italic;
+}
+
+.counter {
+  margin-top: 18px;
+  color: #ad8990;
+  font-size: 14px;
+}
+
+/* ԿՈՃԱԿՆԵՐ */
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.controls button,
+.music-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  background: #b9828b;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.controls button:hover,
+.music-button:hover {
+  background: #9e6873;
+}
+
+.controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.music-button {
+  margin-bottom: 20px;
+}
+
+.back-button {
+  margin-top: 25px;
+  background: transparent;
+  border: none;
+  color: #a78389;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .album {
+    padding: 25px 10px;
+  }
+
+  .album h2 {
+    font-size: 25px;
+  }
+
+  .book {
+    padding: 10px;
+  }
+
+  .photo-area {
+    height: 55vh;
+    min-height: 250px;
+    max-height: 430px;
+  }
+
+  .photo-area img {
+    max-height: 55vh;
+  }
+
+  .caption {
+    font-size: 17px;
+  }
+
+  .controls {
+    gap: 8px;
+  }
+
+  .controls button {
+    padding: 11px 18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ԵՐԱԺՇՏՈՒԹՅՈՒՆ -->
+
+<audio id="mySong" loop preload="auto">
+  <source src="Arkadi_Dumikyan_-_Mi_Siro_Patmutyun_2020_70802877.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ՇԱՊԻԿ -->
+
+<section class="cover" id="cover">
+  <div class="cover-content">
+
+    <div class="heart">♥</div>
+
+    <h1>Մեր փոքրիկ աշխարհը</h1>
+
+    <p>
+      Մի պատմություն՝ լի սիրով,
+      ջերմությամբ ու գեղեցիկ հիշողություններով...
+    </p>
+
+    <div class="line"></div>
+
+    <p>Միայն դու և ես ♡</p>
+
+    <button onclick="openAlbum()">
+      Բացել մեր ալբոմը ♡
+    </button>
+
+  </div>
+</section>
+
+<!-- ԱԼԲՈՄ -->
+
+<main class="album" id="album">
+
+  <h2>Մեր հիշողությունները ♡</h2>
+
+  <p class="intro">
+    Յուրաքանչյուր նկար մի ամբողջ պատմություն է...
+  </p>
+
+  <button class="music-button" id="musicBtn" onclick="toggleMusic()">
+    ♫ Անջատել երգը
+  </button>
+
+  <div class="book" id="book">
+
+    <div id="pages"></div>
+
+    <div class="counter" id="counter"></div>
+
+  </div>
+
+  <div class="controls">
+
+    <button id="prevBtn" onclick="changePage(-1)">
+      ← Նախորդը
+    </button>
+
+    <button id="nextBtn" onclick="changePage(1)">
+      Հաջորդը →
+    </button>
+
+  </div>
+
+  <button class="back-button" onclick="backToCover()">
+    Վերադառնալ շապիկին
+  </button>
+
+</main>
+
+<script>
+
+// ՆԿԱՐՆԵՐԻ ՀԱՍՑԵՆԵՐԸ
+const photos = [
+      "PHOTO1.jpg",
+      "PHOTO2.jpg",
+      "PHOTO3.jpg",
+      "PHOTO4.jpg",
+      "PHOTO5.jpg",
+      "PHOTO6.jpg",
+      "PHOTO7.jpg",
+      "PHOTO8.jpg",
+      "PHOTO9.jpg",
+      "PHOTO10.jpg",
+      "PHOTO11.jpg",
+      "PHOTO12.jpg",
+      "PHOTO13.jpg",
+      "PHOTO14.jpg",
+      "PHOTO18.jpg",
+      "PHOTO16.jpg",
+      "PHOTO17.jpg",
+      "PHOTO15.jpg",
+      "PHOTO19.jpg",
+      "PHOTO20.jpg"
+    ];
+
+
+// ՍԻՐԱՅԻՆ ԳՐՈՒԹՅՈՒՆՆԵՐ
+
+const captions = [
+  "Քո կողքին ամեն ինչ ավելի գեղեցիկ է։",
+  "Դու իմ ամենասիրելի պատահականությունն ես։",
+  "Քո ժպիտը իմ ամենասիրելի տեսարանն է։",
+  "Քեզ հետ նույնիսկ լռությունն է գեղեցիկ։",
+  "Իմ ամենաջերմ տեղը քո կողքին է։",
+  "Դու իմ օրվա ամենագեղեցիկ մասն ես։",
+  "Քեզ հետ ամեն պահ դառնում է հիշողություն։",
+  "Իմ սիրտը միշտ քեզ է ընտրում։",
+  "Քո աչքերում ես գտնում եմ իմ աշխարհը։",
+  "Ուզում եմ՝ մեր պատմությունը երբեք չավարտվի։",
+  "Դու իմ ամենասիրելի մարդն ես։",
+  "Քեզ հետ սովորական օրերն էլ տոն են։",
+  "Մեր փոքրիկ պահերն ինձ համար մեծ երջանկություն են։",
+  "Քո կողքին ես ինձ տանն եմ զգում։",
+  "Եթե նորից ընտրեի, կրկին քեզ կընտրեի։",
+  "Դու իմ ամենագեղեցիկ երազանքն ես։",
+  "Թող այս պահերը միշտ մնան մեզ հետ։",
+  "Իմ սիրելի պատմությունը մեր պատմությունն է։",
+  "Քեզ հետ ուզում եմ հավաքել հազարավոր հիշողություններ։",
+  "Սա մեր պատմության միայն սկիզբն է։ ♥"
+];
+
+let currentPage = 0;
+
+const pagesContainer = document.getElementById("pages");
+const counter = document.getElementById("counter");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const song = document.getElementById("mySong");
+const musicBtn = document.getElementById("musicBtn");
+
+// ՍՏԵՂԾՈՒՄ ԵՆՔ ԷՋԵՐԸ
+
+photos.forEach((photo, index) => {
+
+  const page = document.createElement("div");
+  page.className = "page";
+
+  const photoArea = document.createElement("div");
+  photoArea.className = "photo-area";
+
+  const img = document.createElement("img");
+  img.src = photo;
+  img.alt = `Մեր հիշողությունը ${index + 1}`;
+  img.loading = "lazy";
+
+  const caption = document.createElement("div");
+  caption.className = "caption";
+  caption.textContent = captions[index];
+
+  photoArea.appendChild(img);
+  page.appendChild(photoArea);
+  page.appendChild(caption);
+
+  pagesContainer.appendChild(page);
+
+});
+
+const pages = document.querySelectorAll(".page");
+
+// ՑՈՒՅՑ ԵՆՔ ՏԱԼԻՍ ԷՋԸ
+
+function showPage() {
+
+  pages.forEach((page, index) => {
+    page.classList.toggle("active", index === currentPage);
+  });
+
+  counter.textContent =
+    `${currentPage + 1} / ${pages.length} ♡`;
+
+  prevBtn.disabled = currentPage === 0;
+  nextBtn.disabled = currentPage === pages.length - 1;
+
+}
+
+// ԲԱՑՈՒՄ ԵՆՔ ԱԼԲՈՄԸ ԵՎ ԵՐԳԸ
+
+function openAlbum() {
+
+  document.getElementById("cover").style.display = "none";
+  document.getElementById("album").style.display = "block";
+
+  currentPage = 0;
+  showPage();
+
+  song.play().then(() => {
+    musicBtn.textContent = "♫ Անջատել երգը";
+  }).catch(() => {
+    musicBtn.textContent = "♫ Միացնել երգը";
+  });
+
+}
+
+// ԵՐԳԸ ՄԻԱՑՆԵԼ / ԱՆՋԱՏԵԼ
+
+function toggleMusic() {
+
+  if (song.paused) {
+
+    song.play().then(() => {
+      musicBtn.textContent = "♫ Անջատել երգը";
+    }).catch(() => {
+      musicBtn.textContent = "♫ Միացնել երգը";
+    });
+
+  } else {
+
+    song.pause();
+    musicBtn.textContent = "♫ Միացնել երգը";
+
+  }
+
+}
+
+// ԹԵՐԹՈՒՄ ԵՆՔ ԷՋԵՐԸ
+
+function changePage(direction) {
+
+  const nextPage = currentPage + direction;
+
+  if (nextPage >= 0 && nextPage < pages.length) {
+    currentPage = nextPage;
+    showPage();
+  }
+
+}
+
+// ՎԵՐԱԴԱՌՆՈՒՄ ԵՆՔ ՇԱՊԻԿԻՆ
+
+function backToCover() {
+
+  document.getElementById("album").style.display = "none";
+  document.getElementById("cover").style.display = "flex";
+
+  song.pause();
+  song.currentTime = 0;
+
+  musicBtn.textContent = "♫ Միացնել երգը";
+
+}
+
+// ՀԵՌԱԽՈՍՈՎ ՍԱՀԵՑՆԵԼՈՎ ԹԵՐԹԵԼ
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+const book = document.getElementById("book");
+
+book.addEventListener("touchstart", function(event) {
+  touchStartX = event.changedTouches[0].screenX;
+}, { passive: true });
+
+book.addEventListener("touchend", function(event) {
+
+  touchEndX = event.changedTouches[0].screenX;
+
+  const difference = touchStartX - touchEndX;
+
+  if (Math.abs(difference) > 50) {
+
+    if (difference > 0) {
+      changePage(1);
+    } else {
+      changePage(-1);
+    }
+
+  }
+
+}, { passive: true });
+
+</script>
+
+</body>
+</html>
